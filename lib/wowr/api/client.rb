@@ -13,7 +13,7 @@ module Wowr
 
       def self.included(base)
         base.class_eval do
-          @@armory_base_url   = 'wowarmory.com/'.freeze
+          @@armory_base_url   = 'battle.net/wow/'.freeze
           @@login_base_url    = 'battle.net/'.freeze
           @@login_url         = 'login/login.xml'.freeze
           @@persistent_cookie = 'COM-warcraft'.freeze
@@ -42,17 +42,11 @@ module Wowr
       # Return the base url for the armory, e.g. http://eu.wowarmory.com/
       # * locale (String) The locale, defaults to that specified in the API constructor
       def base_url(options = {})
-        str = ""
+        # Non-secure only
+        str = 'http://'
 
-        if (options[:secure] == true)
-          str += 'https://'
-        else
-          str += 'http://'
-        end
-
-        # No more language-specific subdomains
-        # Language is handled in a cookie
-        str += "www."
+        # Region specific subdomains
+        str += "#{options[:region]}."
 
         if (options[:login] == true)
           str += @@login_base_url
@@ -60,7 +54,8 @@ module Wowr
           str += @@armory_base_url
         end
 
-        return str
+        # Language specific folders
+        str += "#{options[:lang]}/"
       end
 
       # @todo Re-implement

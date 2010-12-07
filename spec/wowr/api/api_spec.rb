@@ -7,7 +7,7 @@ describe Wowr::API::API, "class accessors" do
     subject::VERSION.should_not be_nil
   end
 
-  its(:armory_base_url)          { should eql('wowarmory.com/') }
+  its(:armory_base_url)          { should eql('battle.net/wow/') }
   its(:search_url)               { should eql('search.xml') }
   its(:character_sheet_url)      { should eql('character-sheet.xml') }
   its(:character_talents_url)    { should eql('character-talents.xml') }
@@ -36,7 +36,7 @@ describe Wowr::API::API, "initialization" do
   context "without options" do
     subject { Wowr::API.new }
 
-    its(:lang)          { should eql('en_US') }
+    its(:lang)          { should eql('en') }
     its(:caching)       { should be_true }
     its(:cache_timeout) { should eql(604800) }
     its(:debug)         { should_not be_true }
@@ -91,6 +91,13 @@ describe Wowr::API::API, "attribute accessors" do
     it "should assign and return 'Lang'" do
       api.lang = 'Lang'
       api.lang.should == 'Lang'
+    end
+  end
+
+  describe "#region= and #region" do
+    it "should assign and return 'Region'" do
+      api.region = 'Region'
+      api.region.should == 'Region'
     end
   end
 
@@ -413,8 +420,8 @@ describe Wowr::API::API do
   end
 
   describe "#base_url" do
-    it "should handle a :secure option" do
-      api.base_url(:secure => true).should match(/^https/)
+    it "should handle a :region option" do
+      api.base_url(:region => 'us').should match(/^http:\/\/us/)
     end
 
     it "should handle a :login option" do

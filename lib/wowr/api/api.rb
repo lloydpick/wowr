@@ -6,7 +6,7 @@ module Wowr
       @@search_url = 'search.xml'.freeze
       cattr_reader :search_url
 
-      attr_accessor :character_name, :guild_name, :realm, :lang, :caching, :cache_timeout, :debug
+      attr_accessor :character_name, :guild_name, :realm, :lang, :region, :caching, :cache_timeout, :debug
 
       # @deprecated
       attr_accessor :locale
@@ -33,7 +33,8 @@ module Wowr
         @character_name = options[:character_name]
         @guild_name     = options[:guild_name]
         @realm          = options[:realm]
-        @lang           = options[:lang].nil? ? 'en_US' : options[:lang]
+        @region         = options[:region].nil? ? 'eu' : options[:region]
+        @lang           = options[:lang].nil? ? 'en' : options[:lang]
         @caching        = options[:caching].nil? ? true : options[:caching]
         @cache_timeout  = options[:cache_timeout] || (7*24*60*60)
         @debug          = options[:debug] || false
@@ -113,6 +114,7 @@ module Wowr
         # defaults[:guild_name] = @guild_name if @guild_name
         defaults[:realm]          = @realm          if @realm
         defaults[:lang]           = @lang           if @lang
+        defaults[:region]         = @region         if @region
         defaults[:caching]        = @caching        if @caching
         defaults[:cache_timeout]  = @cache_timeout  if @cache_timeout
         defaults[:debug]          = @debug          if @debug
