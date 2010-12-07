@@ -100,7 +100,7 @@ module Wowr
 
       # Given a url and a hash of query parameters, fetches a file from the Armory as raw XML
       def get_file(url, options = {})
-        query = remap_parameters(options)
+        url = remap_url_parameters(url, options)
 
         client = ArmoryClient
         client.base_uri(self.base_url(options) + "/")
@@ -114,7 +114,7 @@ module Wowr
         end
 
         begin
-          client.get(url, :query => query).response.body
+          client.get(url).response.body
         rescue Timeout::Error => e
           raise Wowr::Exceptions::NetworkTimeout.new('Timed out - Timeout::Error Exception')
         rescue SocketError, Net::HTTPExceptions => e
@@ -123,6 +123,20 @@ module Wowr
       end
 
       private
+
+      # Remap verbose option keys to the parameter keys used in the URL by the Armory
+      #
+      # @example
+      #   >> remap_url_parameters(:character_name => 'Tsigo', :realm => "Mal'Ganis", :guild_name => 'Juggernaut')
+      #   => "/character/malganis/tsigo/simple"
+      # @param [Hash] options Options hash
+
+      def remap_url_parameters(url, options = {})
+        options.each do |key, value|
+          url.gsub!("{#{key}}", value.to_s.downcase.gsub('\'', ''))
+        end
+        url
+      end
 
       # Remap verbose option keys to the parameter keys used by the Armory
       #

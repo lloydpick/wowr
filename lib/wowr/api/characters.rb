@@ -3,7 +3,7 @@ module Wowr
     module Characters
       def self.included(base)
         base.class_eval do
-          @@character_sheet_url        = 'character-sheet.xml'.freeze
+          @@character_sheet_url        = 'character/{realm}/{character_name}/simple'
           @@character_talents_url      = 'character-talents.xml'.freeze
           @@character_reputation_url   = 'character-reputation.xml'.freeze
           @@character_achievements_url = 'character-achievements.xml'.freeze
